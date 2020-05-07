@@ -2,11 +2,11 @@
 
 Query and manipulate moment objects within the scope of business/working hours.
 
+Fork for Commutron includes additional functions for a ship day schedule.
+
 ## Install
 
-```
-npm install [--save] moment-business-time
-```
+this fork is not on npm. install from repository.
 
 ## Methods
 
@@ -129,6 +129,44 @@ moment('2015-02-27T16:00:00Z').subtractWorkingTime(5, 'hours', 30, 'minutes');
 
 ```
 
+### `moment#isShipDay`
+
+Returns: `Boolean`
+
+Determines if the day of the current instance is a ship day. Ship days are defined as any day with shipping hours in the current locale.
+
+#### Example:
+```javascript
+moment('2015-02-27').isShipDay();
+// true
+moment('2015-02-28').isShipDay();
+// false
+```
+
+### `moment#nextShipDay`
+
+Returns: `moment`
+
+Returns a new moment representing the next day considered to be a shipping day. The hours/minutes/seconds will be as for the source moment.
+
+### `moment#nextShippingTime`
+
+Returns: `moment`
+
+Returns a new moment representing the start of the next day considered to be a shipping day.
+
+### `moment#lastShipDay`
+
+Returns: `moment`
+
+Returns a new moment representing the previous day considered to be a ship day. The hours/minutes/seconds will be as for the source moment.
+
+### `moment#lastShippingTime`
+
+Returns: `moment`
+
+Returns a new moment representing the end of the previous day considered to be a shipping day.
+
 ### `moment#workingDiff`
 
 Returns: `Number`
@@ -197,6 +235,28 @@ moment('2016-12-25').isWorkingDay() // false
 moment('2017-12-25').isWorkingDay() // false
 moment('2018-12-25').isWorkingDay() // false
 ```
+
+### Shipping hours
+
+The shipping hours used for a locale can be modified using moment's `locale` method. The default shipping hours are 11:00-12:00, Tue&Thurs.
+
+Example:
+
+```javascript
+// set shipping windows within the working hours
+moment.locale('en', {
+    shippinghours: {
+        0: null,
+        1: null,
+        2: ['11:00:00', '12:00:00'],
+        3: null,
+        4: ['11:00:00', '12:00:00'],
+        5: null
+        6: null
+    }
+});
+````
+
 
 ## Running tests
 
